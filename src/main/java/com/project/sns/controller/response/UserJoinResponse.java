@@ -14,6 +14,6 @@ public class UserJoinResponse {
     private UserRole role;
 
     public static UserJoinResponse fromUser(User user) {
-        return new UserJoinResponse(user.getId(), user.getPassword(), user.getUserRole());
+        return new UserJoinResponse(user.getId(), user.getUserName(), user.getUserRole());
     }
 }
