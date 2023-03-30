@@ -5,10 +5,12 @@ import com.project.sns.model.AlarmArgs;
 import com.project.sns.model.AlarmType;
 import com.project.sns.model.Comment;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.sql.Timestamp;
 
+@Data
 @AllArgsConstructor
 public class AlarmResponse {
 
