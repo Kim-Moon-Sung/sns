@@ -15,3 +15,7 @@ spring.jpa:
 jwt:
   secret-key: fast-campus.simple_sns_2022_secret_key
   token.expired-time-ms: 2592000000
+
+spring:
+  redis:
+    url: redis://:p0e49f4b6b58d7ab7bed7b8c478e5587a0d2742066d04fdebe452c529f759ed6c@ec2-44-214-12-201.compute-1.amazonaws.com:18439
