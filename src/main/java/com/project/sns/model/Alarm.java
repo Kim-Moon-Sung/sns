@@ -19,7 +19,7 @@ public class Alarm {
     public static Alarm fromEntity(AlarmEntity entity) {
         return new Alarm(
                 entity.getId(),
-                entity.getAlarmType(),
+                 entity.getAlarmType(),
                 entity.getArgs(),
                 entity.getRegisteredAt(),
                 entity.getUpdatedAt(),
