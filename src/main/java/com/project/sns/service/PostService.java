@@ -7,6 +7,8 @@ import com.project.sns.model.AlarmType;
 import com.project.sns.model.Comment;
 import com.project.sns.model.Post;
 import com.project.sns.model.entity.*;
+import com.project.sns.model.event.AlarmEvent;
+import com.project.sns.producer.AlarmProducer;
 import com.project.sns.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,7 @@ public class PostService {
     private final CommentEntityRepository commentEntityRepository;
     private final AlarmEntityRepository alarmEntityRepository;
     private final AlarmService alarmService;
+    private final AlarmProducer alarmProducer;
 
     @Transactional
     public void create(String title, String body, String userName) {
@@ -84,8 +87,7 @@ public class PostService {
 
         // like save
         likeEntityRepository.save(LikeEntity.of(userEntity, postEntity));
-        AlarmEntity alarmEntity = alarmEntityRepository.save(AlarmEntity.of(postEntity.getUser(), AlarmType.NEW_LIKE_ON_POST, new AlarmArgs(userEntity.getId(), postEntity.getId())));
-        alarmService.send(alarmEntity.getId(), postEntity.getUser().getId());
+        alarmProducer.send(new AlarmEvent(postEntity.getUser().getId(), AlarmType.NEW_LIKE_ON_POST, new AlarmArgs(userEntity.getId(), postEntity.getId())));
     }
 
     public long likeCount(Integer postId) {
@@ -104,8 +106,7 @@ public class PostService {
 
         // comment save
         commentEntityRepository.save(CommentEntity.of(userEntity, postEntity, comment));
-        AlarmEntity alarmEntity = alarmEntityRepository.save(AlarmEntity.of(postEntity.getUser(), AlarmType.NEW_COMMENT_ON_POST, new AlarmArgs(userEntity.getId(), postEntity.getId())));
-        alarmService.send(alarmEntity.getId(), postEntity.getUser().getId());
+        alarmProducer.send(new AlarmEvent(postEntity.getUser().getId(), AlarmType.NEW_COMMENT_ON_POST, new AlarmArgs(userEntity.getId(), postEntity.getId())));
     }
 
     public Page<Comment> getComments(Integer postId, Pageable pageable) {
